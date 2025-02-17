@@ -1,0 +1,2313 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Balinese&family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+    <link rel="icon" href="car-icono.ico">
+    <title>Auto</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            font-family: "Noto Serif Balinese";
+        }
+        nav{
+            width: 100vw;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            height: 8vh;
+            background-color: rgb(95, 103, 179);
+        }
+        nav div{
+            display: block;
+            width: fit-content;
+            margin: auto;
+            background-color: aliceblue;
+            padding: 10px;
+            border-radius: 20px;
+            font-size: 1.4em;
+        }
+        .cajaMadre{
+            width: 80vw;
+            margin: 5vh auto;
+            background-color: #fff;
+            border-radius: 1%;
+        }
+        .cajaMadre h1{
+            text-align: center;
+            margin: 2vh auto;
+        }
+        form, form ul{
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px 15px;
+        }
+        .liOl{
+            display: grid;
+            grid-template-columns: 20% 80%;
+            gap: 25px 15px;
+        }
+        body{
+            background: linear-gradient(to right, rgb(176, 176, 255), #eee, rgb(176, 176, 255));
+        }
+        #formularioAuto h3, h2{
+            grid-column: 1/-1;
+            margin: 15px auto;
+            font-size: 1.3em;
+            text-align: center;
+        }
+        button{
+            background-color: rgb(99, 99, 255);
+            padding: 15px;
+            border: none;
+            border-radius: 25px;
+            box-shadow: 0 0 5px  #000;
+            margin: auto;
+            cursor: pointer;
+            display: block;
+            color: #fff;
+        }
+        #mensajeBotonError{
+            margin: auto;
+            color: red;
+            display: none;
+            width: fit-content;
+            font-weight: bold;
+        }
+        form{
+            padding-bottom: 20px;
+            padding-left: 30px;
+        }
+        .cajaDivs{
+            grid-column: 1/-1;
+            display: none;
+        }
+        .ulOl{
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+        }
+        .error{
+            color: red;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        .errorInput{
+            outline: red solid 2px;
+            width: fit-content;
+        }
+        .optionsAL{
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="cajaMadre">
+        <ul>
+        <form id="formularioAuto">
+            <h2>Información Personal</h2>
+                <li>
+                <label for="nombre">Nombres:</label>
+                <input type="text" id="nombre" name="nombre" placeholder="Firstname Middlename">
+                </li>
+                <li>
+                <label for="apellido">Apellidos:</label>
+                <input type="text" id="apellido" name="apellido">
+                </li>
+                <li>
+                <label for="DOB">Fecha de nacimiento:</label>
+                <input type="text" id="DOB" name="DOB" class="DOBs" onkeyup="formatFecha(this)" placeholder="MM/DD/YYYY">
+                </li>
+                <li>
+                    <label for="genero">Genero: </label>
+                    <select name="genero" id="genero">
+                        <option value=""></option>
+                        <option value="M">Masculino</option>
+                        <option value="F">Femenino</option>
+                    </select>
+                </li>
+                <li>
+                <label for="telefono">Teléfono:</label>
+                <input type="number" id="telefono" name="telefono" min="1000000000" max="9999999999">
+                </li>
+                <li>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email">
+                </li>
+                <li>
+                <label for="address">Dirección:</label>
+                <input type="text" id="address" name="address" placeholder="Street, City, State ZipCode">
+                <div style="display: none;" class="error" id="errorAddress">Formato: Street, City, State ZipCode</div>
+                </li>
+                <li>
+                <label for="county">Condado:</label>
+                <input type="text" id="county" name="county">
+                </li>
+                <li>
+                <label for="checkMailing">¿El cliente tiene una dirección de correspondencia diferente?</label>
+                <input type="checkbox" id="checkMailing" name="checkMailing">
+                </li>
+                <li style="display: none;"  class="liAddress">
+                <label for="mailingAddress">Dirección de correspondencia:</label>
+                <input type="text" id="mailingAddress" name="mailingAddress" placeholder="Street, City, State Zip Code">
+                </li>
+                <li style="display: none;"  class="liAddress">
+                <label for="mailingCounty">Condado de correspondencia:</label>
+                <input type="text" id="mailingCounty" name="mailingCounty">
+                </li>
+                <li>
+                    <label for="licencia">Número de licencia:</label>
+                    <input type="text" id="licencia" name="licencia">
+                </li>
+                <li>
+                    <label for="licenciaState">Estado de la licencia:</label>
+                    <input type="text" id="licenciaState" name="licenciaState" list="stateList" maxlength="6">
+                    <datalist id="stateList">
+                        <option value="AZ">AZ</option>
+                        <option value="CO">CO</option>
+                        <option value="GA">GA</option>
+                        <option value="NV">NV</option>
+                        <option value="TX">TX</option>
+                    </datalist>
+                </li>
+                <li>
+                    <label for="typeLicense">Tipo de licencia: </label>
+                    <select id="typeLicense" name="typeLicense">
+                        <option value="DL">DL</option>
+                        <option value="CDL">CDL</option>
+                        <option value="Passport">Passport</option>
+                        <option value="Internacional">Internacional</option>
+                    </select>
+                </li>
+                <li>
+                    <label for="Sr22">¿Necesita Sr22?</label>
+                    <input type="checkbox" id="Sr22" name="Sr22" class="sr22">
+                </li>
+                <li>
+                <label for="ocupacion">Ocupación:</label>
+                <input type="text" id="ocupacion" name="ocupacion" list="ocupaciones">
+                </li>
+                <li>
+                <label for="levelStudies">Nivel de esudio:</label>
+                <select id="levelStudies" name="levelStudies">
+                    <option value="High School">High School</option>
+                    <option value="Some college">Some college</option>
+                </select>
+                </li>
+                <li>
+                <label for="numeroDrivers">Número de drivers adicionales: </label>
+                <input type="number" id="numeroDrivers" name="numeroDrivers" min="0" max="9">
+                </li>
+                <li>
+                <label for="numeroVehicles">Número de vehiculos: </label>
+                <input type="number" id="numeroVehicles" name="numeroVehicles" value="" min="1" max="10">
+                </li>
+                <li>
+                <label for="priorPolicy">¿Tiene póliza previa?</label>
+                <input type="checkbox" id="priorPolicy" name="priorPolicy">
+                </li>
+                <li style="display: none;" class="liPolicy">
+                <label for="currentInsurance">Compañía Actual: </label>
+                <input type="text" id="currentInsurance" name="currentInsurance">
+                </li>
+                <li style="display: none;" class="liPolicy">
+                <label for="amount">Precio actual: </label>
+                <input type="number" id="amount" name="amount">
+                </li>
+                <div id="cajaDrivers" class="cajaDivs"></div>
+                <div id="cajaAutos" class="cajaDivs"></div>
+                <div id="cajaCoberturas" class="cajaDivs"></div>
+                <h3>Discounts</h3>
+                <li>
+                <label for="homeowner">¿Dueño de casa?</label>
+                <input type="checkbox" id="homeowner" name="homeowner">
+                </li>
+                <li class="liHomeowner">
+                <label for="ALRenter">Limite Liability Renters</label>
+                <input type="text" id="ALRenter" name="ALRenter">
+                </li>
+                <li>
+                <label for="checkFull">¿Pago en full?</label>
+                <input type="checkbox" id="checkFull" name="checkFull">
+                </li>
+                <li>
+                <label for="checkPaperless">¿Paperless?</label>
+                <input type="checkbox" id="checkPaperless" name="checkPaperless">
+                </li>
+                <li>
+                <label for="checkSnapshot">¿Snapshot?</label>
+                <input type="checkbox" id="checkSnapshot" name="checkSnapshot">
+                </li>
+                <ol class="olSnapshot" style="display: none;">
+
+                </ol>
+                <li>
+                <label for="checkProgressive">¿Alguna póliza activa con Progressive?</label>
+                <input type="checkbox" id="checkProgressive" name="checkProgressive">
+                </li>
+                <li style="display: none;" class="liCompanyDiscount">
+                <label for="companyDiscount">¿Cual producto?</label>
+                <select name="companyDiscount" id="companyDiscount">
+                    <option value=""></option>
+                    <option value="Auto">Auto</option>
+                    <option value="Bote">Bote</option>
+                    <option value="Commercial">Commercial</option>
+                    <option value="Home">Home</option>
+                    <option value="Moto">Moto</option>
+                    <option value="Renters">Renters</option>
+                </select>
+                </li>
+                <li>
+                <label for="checkPlug-in">¿Plug-in?:</label>
+                <input type="checkbox" id="checkPlug-in" name="checkPlug-in">
+                </li>
+                <ol class="olPlug-in" style="display: none;">
+
+                </ol>
+                <li>
+                <label for="checkGoodStudent">¿Buen estudiante?</label>
+                <input type="checkbox" id="checkGoodStudent" name="checkGoodStudent">
+                </li>
+                <li>
+                <label for="checkDistantStudent">¿Distant Student?</label>
+                <input type="checkbox" id="checkDistantStudent" name="checkDistantStudent">
+                </li>
+            </ul>
+
+            <datalist id="ocupaciones">
+                <option value="Constructor"></option>
+                <option value="Driver"></option>
+                <option value="Homewife"></option>
+                <option value="Retired"></option>
+            </datalist>
+            <!-- Añade todos los demás campos que necesites -->
+
+            <button type="button" id="butonGenerar">Generar PDF</button>
+            <div id="mensajeBotonError">Por favor corrige los campos en rojo</div>
+        </form>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+    <script>
+
+        window.addEventListener('beforeunload', function(event) {
+        if (confirm('¿Estás seguro de que deseas recargar la página?')) {
+            // Si el usuario acepta, se recarga la página
+        } else {
+            // Si el usuario cancela, se evita la recarga de la página
+            event.preventDefault();
+            event.returnValue = '';
+        }
+        });
+
+        function addField(field, newField) {
+        // Verificar si el objeto ya existe en el arreglo
+            const existingField = field.find(field => field.id === newField.id);
+            if (!existingField) {
+                // Si no existe, agregarlo al arreglo
+                field.push(newField);
+            } else {
+                console.log(`El campo con id "${newField.id}" ya existe en el arreglo.`);
+                existingField.informacion = newField.informacion
+            }
+        }
+        function addFieldCobertura(field, newField) {
+        // Verificar si el objeto ya existe en el arreglo
+            const existingField = field.find(field => field.id === newField.id);
+            if (!existingField) {
+                // Si no existe, agregarlo al arreglo
+                field.push(newField);
+            } else {
+                console.log(`El campo con id "${newField.id}" ya existe en el arreglo.`);
+                existingField.obligatorio = newField.obligatorio
+            }
+        }
+
+
+
+        function mostrarBloque(check, listaElementos) {
+            for (let index = 0; index < listaElementos.length; index++) {
+                var bloque = listaElementos[index];
+                if(check.checked){
+                    bloque.style.display = "list-item";
+                }else{
+                    bloque.style.display = "none";
+                }
+            }
+        }
+        
+        function formatFecha(input) {
+        // Eliminar caracteres no numéricos
+        var valor = input.value.replace(/\D/g, ''); 
+
+        // Limitar a 8 dígitos (MMDDYYYY)
+        valor = valor.substring(0, 8); 
+
+        // Agregar '/' en las posiciones correctas
+        if (valor.length >= 2) {
+            valor = valor.substring(0, 2) + '/' + valor.substring(2);
+        }
+        if (valor.length >= 5) {
+            valor = valor.substring(0, 5) + '/' + valor.substring(5);
+        }
+
+        input.value = valor;
+        }
+
+        var injury = "(Completa la direccion)";
+        
+        var checkAddress = document.getElementById("checkMailing");
+        var liAddress = document.getElementsByClassName("liAddress");
+        checkAddress.addEventListener("click", ()=>{mostrarBloque(checkAddress, liAddress)});
+        var priorPolicy = document.getElementById("priorPolicy");
+        var liPolicy = document.getElementsByClassName("liPolicy");
+        priorPolicy.addEventListener("click", ()=>{mostrarBloque(priorPolicy, liPolicy)});
+        var homeowner = document.getElementById("homeowner");
+        var liHomeowner = document.getElementsByClassName("liHomeowner");
+        homeowner.addEventListener("click", ()=>{
+            for (let index = 0; index < liHomeowner.length; index++) {
+                var bloque = liHomeowner[index];
+                if(homeowner.checked){
+                    bloque.style.display = "none";
+                }else{
+                    bloque.style.display = "list-item";
+                }
+            }
+        });
+        var checkProgressive = document.getElementById("checkProgressive");
+        var liCompanyDiscount = document.getElementsByClassName("liCompanyDiscount");
+        checkProgressive.addEventListener("click", ()=>{mostrarBloque(checkProgressive, liCompanyDiscount)});
+
+        
+        const divCoberturas = document.getElementById("cajaCoberturas");
+        const inputNumeroDrivers = document.getElementById("numeroDrivers");
+        const divDrivers = document.getElementById("cajaDrivers");
+        inputNumeroDrivers.addEventListener("change", ()=>{
+            var numeroDrivers = document.getElementById("numeroDrivers").value;
+            divDrivers.innerHTML = "";
+            if (numeroDrivers !== "0") {
+                divDrivers.style.display = "block"
+                for (let index = 0; index < numeroDrivers; index++) {
+                    const ulElement = document.createElement('ul');
+                    ulElement.id = `ulDriver${index}`;
+                    divDrivers.appendChild(ulElement);
+                    ulElement.innerHTML = `<h2 id="h2Drivers">Driver #${index+1}</h2>
+                        <li>
+                            <label for="nombre${index}">Nombres:</label>
+                            <input type="text" id="nombre${index}" name="nombre${index}" placeholder="Firstname Middlename">
+                        </li>
+                        <li>
+                            <label for="apellido${index}">Apellidos:</label>
+                            <input type="text" id="apellido${index}" name="apellido${index}">
+                        </li>
+                        <li>
+                            <label for="DOB${index}">Fecha de nacimiento:</label>
+                            <input type="text" id="DOB${index}" name="DOB${index}" class="DOBs" onkeyup="formatFecha(this)" placeholder="MM/DD/YYYY">
+                        </li>
+                        <li>
+                            <label for="genero${index}">Genero: </label>
+                            <select name="genero${index}" id="genero${index}">
+                                <option value=""></option>
+                                <option value="M">Masculino</option>
+                                <option value="F">Femenino</option>
+                            </select>
+                        </li>
+                        <li>
+                            <label for="relation${index}">Relacion con el asegurado: </label>
+                            <select id="relation${index}" class="relationList">
+                                <option value=""></option>
+                                <option value="Spouse">Spouse</option>
+                                <option value="Son">Son</option>
+                                <option value="Daughter">Daughter</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </li>
+                        <li>
+                            <label for="ocupacion${index}">Ocupación:</label>
+                            <input type="text" id="ocupacion${index}" name="ocupacion${index}" list="ocupaciones">
+                        </li>
+                        <li>
+                            <label for="levelStudies${index}">Nivel de esudio:</label>
+                            <select id="levelStudies${index}" name="levelStudies${index}">
+                                <option value="High School">High School</option>
+                                <option value="Some college">Some college</option>
+                            </select>
+                        </li>
+                        <li>
+                            <label for="licencia${index}">Número de licencia:</label>
+                            <input type="text" id="licencia${index}" name="licencia${index}">
+                        </li>
+                        <li>
+                            <label for="licenciaState${index}">Estado de la licencia:</label>
+                            <input type="text" id="licenciaState${index}" name="licenciaState${index}" list="stateList" maxlength="2">
+                        </li>
+                        <li>
+                            <label for="typeLicense${index}">Tipo de licencia: </label>
+                            <select id="typeLicense${index}" name="typeLicense${index}">
+                                <option value="DL">DL</option>
+                                <option value="CDL">CDL</option>
+                                <option value="Passport">Passport</option>
+                                <option value="Internacional">Internacional</option>
+                            </select>
+                        </li>
+                        <li>
+                            <label for="excluded${index}">¿Excluido?</label>
+                            <input type="checkbox" id="excluded${index}" name="excluded${index}" class="checksExcluidos">
+                        </li>
+                        <li>
+                            <label for="Sr22${index}">¿Necesita Sr22?</label>
+                            <input type="checkbox" id="Sr22${index}" name="Sr22${index}" class="sr22">
+                        </li>
+                    </ul>`
+                }
+                
+            }else{
+                divDrivers.style.display = "none"
+            }
+        });
+
+        function agregarAutos() {
+            var numeroVehicles = document.getElementById("numeroVehicles").value;
+            divAutos.innerHTML = "";
+            if (numeroVehicles !== "0") {
+                divAutos.style.display = "block"
+                divCoberturas.style.display = "block"
+                for (let index = 0; index < numeroVehicles; index++) {
+                    const ulElement = document.createElement('ul');
+                    ulElement.id = `ulDriver${index}`;
+                    divAutos.appendChild(ulElement);
+                    ulElement.innerHTML = `<h2 id="h2Autos">Auto #${index+1}</h2>
+
+                        <li>
+                            <label for="marca${index}">Marca: </label>
+                            <input type="text" class="inputsAutos" id="marca${index}" name="marca${index}">
+                        </li>
+                        <li>
+                            <label for="model${index}">Model: </label>
+                            <input type="text" class="inputsAutos" id="model${index}" name="model${index}">
+                        </li>
+                        <li>
+                            <label for="year${index}">Year: </label>
+                            <input type="number" class="inputsAutos" min="1900" max="2050" minlength="4" maxlength="4" id="year${index}" name="year${index}">
+                        </li>
+                        <li>
+                            <label for="vin${index}">VIN: </label>
+                            <input type="text" maxlength="17" id="vin${index}" name="vin${index}">
+                        </li>
+                        <li>
+                            <label for="longHasAuto${index}">¿Hace cuanto tiempo tiene el vehiculo?: </label>
+                            <select id="longHasAuto${index}" name="longHasAuto${index}">
+                                <option value=""></option>
+                                <option value="Less than 1 month">Less than 1 month</option>
+                                <option value="1 year">1 month - 1 year</option>
+                                <option value="2 year">1 year - 3 years</option>
+                                <option value="4 years">3 years - 5 years</option>
+                                <option value="6 years">5 years or more</option>
+                            </select>
+                        </li>
+                        <li>
+                            <label for="financed${index}">¿Financiado o propio?: </label>
+                            <select id="financed${index}" name="financed${index}">
+                                <option value="Owned">Owned</option>
+                                <option value="Financed">Financed</option>
+                            </select>
+                        </li>
+                        <li style="display: none" class="liFinance${index}">
+                            <label for="finance${index}">¿Cual es la financiera?: </label>
+                            <input type="text" id="finance${index}" name="finance${index}">
+                        </li>
+                        <li style="display: none" class="liFinance${index}">
+                            <label for="addressFinance${index}">Dirección de la financiera: </label>
+                            <input type="text" id="addressFinance${index}" name="addressFinance${index}">
+                        </li>
+                        <li>
+                            <label for="useVehicle${index}">¿Cual es el uso del vehiculo?: </label>
+                            <select id="useVehicle${index}" name="useVehicle${index}">
+                                <option value="Personal">Personal</option>
+                                <option value="Commute">Commute</option>
+                            </select>
+                        </li>
+                        <li style="display: none" class="liUseVehicle${index}">
+                            <label for="usos${index}">¿Cuantas veces lo usa por semana?: </label>
+                            <input type="number" min="4" max="7" id="usos${index}" name="usos${index}">
+                        </li>
+                        <li style="display: none" class="liUseVehicle${index}">
+                            <label for="miles${index}">Millas diarias: </label>
+                            <input type="number" min="1" max="500" id="miles${index}" name="miles${index}">
+                        </li>`
+                    const variableNameUse = `liUseVehicle${index}`;
+                    var liUse = document.getElementsByClassName(variableNameUse);
+                    window[variableNameUse] = liUse;
+                    const variableNameSelectUse = `useVehicle${index}`;
+                    const selectUse = document.getElementById(variableNameSelectUse);
+                    window[variableNameSelectUse] = selectUse;
+                    window[variableNameSelectUse].addEventListener("change", ()=>{
+                        for (let index = 0; index < window[variableNameUse].length; index++) {
+                            var bloque = window[variableNameUse][index];
+                            if(window[variableNameSelectUse].value == "Commute"){
+                                bloque.style.display = "list-item";
+                            }else{
+                                bloque.style.display = "none";
+                            }
+                        }
+                    });
+                    const variableNameFinance = `liFinance${index}`;
+                    var liFinance = document.getElementsByClassName(variableNameFinance);
+                    window[variableNameFinance] = liFinance;
+                    const variableNameSelectFinanced = `financed${index}`;
+                    const selectFinanced = document.getElementById(variableNameSelectFinanced);
+                    window[variableNameSelectFinanced] = selectFinanced;
+                    window[variableNameSelectFinanced].addEventListener("change", ()=>{
+                        for (let index = 0; index < window[variableNameFinance].length; index++) {
+                            var bloque = window[variableNameFinance][index];
+                            if(window[variableNameSelectFinanced].value == "Financed"){
+                                bloque.style.display = "list-item";
+                            }else{
+                                bloque.style.display = "none";
+                            }
+                        }
+                    });
+                }
+                var inputs = document.getElementsByClassName("inputsAutos");
+                return inputs
+            }else{
+                divAutos.style.display = "none"
+                divCoberturas.style.display = "none"
+            }
+        }
+        const inputNumeroAutos = document.getElementById("numeroVehicles");
+        const divAutos = document.getElementById("cajaAutos");
+        inputNumeroAutos.addEventListener("change", ()=>{
+            var inputs = agregarAutos();
+            for (let index = 0; index < inputs.length; index++) {
+                inputs[index].addEventListener("change", ()=>{
+                    cambiarDatosAutos();
+                })
+                      
+            }
+        });
+
+        
+        const olSnapshot = document.querySelector(".olSnapshot");
+        const olPlugin = document.querySelector(".olPlug-in");
+        function cambiarDatosAutos() {
+            var numeroVehicles = document.getElementById("numeroVehicles").value;
+            olSnapshot.innerHTML = "";
+            olPlugin.innerHTML = "";
+            divCoberturas.innerHTML = "";
+            const h2Element = document.createElement('h2');
+            divCoberturas.appendChild(h2Element);
+            h2Element.innerHTML = "Coberturas"
+            const ulElement = document.createElement('ol');
+            for (let index = 0; index < numeroVehicles; index++) {
+                var marca = document.getElementById(`marca${index}`).value;
+                var modelo = document.getElementById(`model${index}`).value;
+                var year = document.getElementById(`year${index}`).value;
+                const liElemet = document.createElement('li');
+                liElemet.id = `ulDriver${index}`;
+                divCoberturas.appendChild(ulElement);
+                ulElement.appendChild(liElemet);
+                liElemet.innerHTML = `
+                ${marca} ${modelo} ${year}
+                        <ul class="ulOl">
+                            <li>
+                                <label for="AL${index}">Limites de liability (AL): </label>
+                                <select id="AL${index}" name="AL${index}">
+                                    <option id="optionVacia" value="">Ingresa la dirección</option>
+                                    <!-- TX -->
+                                    <option class="TX optionsAL" value="30/60/25" id="ALTX">30/60/25</option>
+                                    <option class="TX optionsAL" value="50/100/25">50/100/25</option>
+                                    <option class="TX optionsAL" value="50/100/50">50/100/50</option>
+                                    <option class="TX optionsAL" value="100/300/25">100/300/25</option>
+                                    <option class="TX optionsAL" value="100/300/50">100/300/50</option>
+                                    <option class="TX optionsAL" value="100/300/100">100/300/100</option>
+                                    <option class="TX optionsAL" value="250/500/25">250/500/25</option>
+                                    <option class="TX optionsAL" value="250/500/50">250/500/50</option>
+                                    <option class="TX optionsAL" value="250/500/100">250/500/100</option>
+                                    <!-- AL -->
+                                    <option class="AL optionsAL" value="25/50/25" id="ALAL">25/50/25</option>
+                                    <option class="AL optionsAL" value="50/100/25">50/100/25</option>
+                                    <option class="AL optionsAL" value="50/100/50">50/100/50</option>
+                                    <option class="AL optionsAL" value="100/300/50">100/300/50</option>
+                                    <option class="AL optionsAL" value="100/300/100">100/300/100</option>
+                                    <option class="AL optionsAL" value="250/500/100">250/500/100</option>
+                                    <!-- AZ -->
+                                    <option class="AZ optionsAL" value="25/50/15" id="ALAZ">25/50/15</option>
+                                    <option class="AZ optionsAL" value="25/50/20">25/50/20</option>
+                                    <option class="AZ optionsAL" value="25/50/25">25/50/25</option>
+                                    <option class="AZ optionsAL" value="25/50/50">25/50/50</option>
+                                    <option class="AZ optionsAL" value="50/100/15">50/100/15</option>
+                                    <option class="AZ optionsAL" value="50/100/20">50/100/20</option>
+                                    <option class="AZ optionsAL" value="50/100/25">50/100/25</option>
+                                    <option class="AZ optionsAL" value="50/100/50">50/100/50</option>
+                                    <option class="AZ optionsAL" value="50/100/100">50/100/100</option>
+                                    <option class="AZ optionsAL" value="100/300/15">100/300/15</option>
+                                    <option class="AZ optionsAL" value="100/300/20">100/300/20</option>
+                                    <option class="AZ optionsAL" value="100/300/25">100/300/25</option>
+                                    <option class="AZ optionsAL" value="100/300/50">100/300/50</option>
+                                    <option class="AZ optionsAL" value="100/300/100">100/300/100</option>
+                                    <option class="AZ optionsAL" value="250/500/15">250/500/15</option>
+                                    <option class="AZ optionsAL" value="250/500/20">250/500/20</option>
+                                    <option class="AZ optionsAL" value="250/500/25">250/500/25</option>
+                                    <option class="AZ optionsAL" value="250/500/50">250/500/50</option>
+                                    <option class="AZ optionsAL" value="250/500/100">250/500/100</option>
+                                    <!-- AR -->
+                                    <option class="AR optionsAL" value="25/50/25" id="ALAR">25/50/25</option>
+                                    <option class="AR optionsAL" value="50/100/25">50/100/25</option>
+                                    <option class="AR optionsAL" value="50/100/50">50/100/50</option>
+                                    <option class="AR optionsAL" value="100/300/50">100/300/50</option>
+                                    <option class="AR optionsAL" value="100/300/100">100/300/100</option>
+                                    <option class="AR optionsAL" value="250/500/100">250/500/100</option>
+                                    <!-- CO -->
+                                    <option class="CO optionsAL" value="25/50/15" id="ALCO">25/50/15</option>
+                                    <option class="CO optionsAL" value="25/50/25">25/50/25</option>
+                                    <option class="CO optionsAL" value="25/50/50">25/50/50</option>
+                                    <option class="CO optionsAL" value="50/100/15">50/100/15</option>
+                                    <option class="CO optionsAL" value="50/100/25">50/100/25</option>
+                                    <option class="CO optionsAL" value="50/100/50">50/100/50</option>
+                                    <option class="CO optionsAL" value="50/100/100">50/100/100</option>
+                                    <option class="CO optionsAL" value="100/300/15">100/300/15</option>
+                                    <option class="CO optionsAL" value="100/300/25">100/300/25</option>
+                                    <option class="CO optionsAL" value="100/300/50">100/300/50</option>
+                                    <option class="CO optionsAL" value="100/300/100">100/300/100</option>
+                                    <option class="CO optionsAL" value="250/500/15">250/500/15</option>
+                                    <option class="CO optionsAL" value="250/500/25">250/500/25</option>
+                                    <option class="CO optionsAL" value="250/500/100">250/500/100</option>
+                                    <!-- FL -->
+                                    <option class="FL optionsAL" value="10/20/10" id="ALFL">10/20/10</option>
+                                    <option class="FL optionsAL" value="10/20/25">10/20/25</option>
+                                    <option class="FL optionsAL" value="25/50/10">25/50/10</option>
+                                    <option class="FL optionsAL" value="25/50/25">25/50/25</option>
+                                    <option class="FL optionsAL" value="25/50/50">25/50/50</option>
+                                    <option class="FL optionsAL" value="50/100/25">50/100/25</option>
+                                    <option class="FL optionsAL" value="50/100/50">50/100/50</option>
+                                    <option class="FL optionsAL" value="50/100/100">50/100/100</option>
+                                    <option class="FL optionsAL" value="100/300/50">100/300/50</option>
+                                    <option class="FL optionsAL" value="100/300/100">100/300/100</option>
+                                    <option class="FL optionsAL" value="250/500/100">250/500/100</option>
+                                    <!-- GA -->
+                                    <option class="GA optionsAL" value="25/50/25" id="ALGA">25/50/25</option>
+                                    <option class="GA optionsAL" value="50/100/25">50/100/25</option>
+                                    <option class="GA optionsAL" value="50/100/50">50/100/50</option>
+                                    <option class="GA optionsAL" value="100/300/50">100/300/50</option>
+                                    <option class="GA optionsAL" value="100/300/100">100/300/100</option>
+                                    <option class="GA optionsAL" value="250/500/100">250/500/100</option>
+                                    <option class="GA optionsAL" value="250/500/250">250/500/250</option>
+                                    <!-- IL -->
+                                    <option class="IL optionsAL" value="25/50/20" id="ALIL">25/50/20</option>
+                                    <option class="IL optionsAL" value="25/50/25">25/50/25</option>
+                                    <option class="IL optionsAL" value="50/100/25">50/100/25</option>
+                                    <option class="IL optionsAL" value="50/100/50">50/100/50</option>
+                                    <option class="IL optionsAL" value="100/300/50">100/300/50</option>
+                                    <option class="IL optionsAL" value="100/300/100">100/300/100</option>
+                                    <option class="IL optionsAL" value="250/500/100">250/500/100</option>
+                                    <!-- MD -->
+                                    <option class="MD optionsAL" value="30/60/15" id="ALMD">30/60/15</option>
+                                    <option class="MD optionsAL" value="30/60/20">30/60/20</option>
+                                    <option class="MD optionsAL" value="30/60/25">30/60/25</option>
+                                    <option class="MD optionsAL" value="50/100/25">50/100/25</option>
+                                    <option class="MD optionsAL" value="50/100/50">50/100/50</option>
+                                    <option class="MD optionsAL" value="100/300/50">100/300/50</option>
+                                    <option class="MD optionsAL" value="100/300/100">100/300/100</option>
+                                    <option class="MD optionsAL" value="250/500/100">250/500/100</option>
+                                    <!-- NV -->
+                                    <option class="NV optionsAL" value="25/50/20" id="ALNV">25/50/20</option>
+                                    <option class="NV optionsAL" value="25/50/25">25/50/25</option>
+                                    <option class="NV optionsAL" value="50/100/20">50/100/20</option>
+                                    <option class="NV optionsAL" value="50/100/25">50/100/25</option>
+                                    <option class="NV optionsAL" value="50/100/50">50/100/50</option>
+                                    <option class="NV optionsAL" value="100/300/20">100/300/20</option>
+                                    <option class="NV optionsAL" value="100/300/25">100/300/25</option>
+                                    <option class="NV optionsAL" value="100/300/50">100/300/50</option>
+                                    <option class="NV optionsAL" value="100/300/100">100/300/100</option>
+                                    <option class="NV optionsAL" value="250/500/20">250/500/20</option>
+                                    <option class="NV optionsAL" value="250/500/25">250/500/25</option>
+                                    <option class="NV optionsAL" value="250/500/50">250/500/50</option>
+                                    <option class="NV optionsAL" value="250/500/100">250/500/100</option>
+                                    <!-- NJ -->
+                                    <option class="NJ optionsAL" value="15/30/5" id="ALNJ">15/30/5</option>
+                                    <option class="NJ optionsAL" value="25/50/25">25/50/25</option>
+                                    <option class="NJ optionsAL" value="50/100/50">50/100/50</option>
+                                    <option class="NJ optionsAL" value="100/300/100">100/300/100</option>
+                                    <option class="NJ optionsAL" value="250/500/100">250/500/100</option>
+                                    <!-- NM -->
+                                    <option class="NM optionsAL" value="25/50/10" id="ALNM">25/50/10</option>
+                                    <option class="NM optionsAL" value="25/50/25">25/50/25</option>
+                                    <option class="NM optionsAL" value="50/100/10">50/100/10</option>
+                                    <option class="NM optionsAL" value="50/100/25">50/100/25</option>
+                                    <option class="NM optionsAL" value="50/100/50">50/100/50</option>
+                                    <option class="NM optionsAL" value="100/300/50">100/300/50</option>
+                                    <option class="NM optionsAL" value="100/300/100">100/300/100</option>
+                                    <option class="NM optionsAL" value="250/500/50">250/500/50</option>
+                                    <option class="NM optionsAL" value="250/500/100">250/500/100</option>
+                                    <!-- NC -->
+                                    <option class="NC optionsAL" value="30/60/25" id="ALNC">30/60/25</option>
+                                    <option class="NC optionsAL" value="30/60/50">30/60/50</option>
+                                    <option class="NC optionsAL" value="50/100/25">50/100/25</option>
+                                    <option class="NC optionsAL" value="50/100/50">50/100/50</option>
+                                    <option class="NC optionsAL" value="100/300/25">100/300/25</option>
+                                    <option class="NC optionsAL" value="100/300/50">100/300/50</option>
+                                    <option class="NC optionsAL" value="100/300/100">100/300/100</option>
+                                    <option class="NC optionsAL" value="250/500/50">250/500/50</option>
+                                    <option class="NC optionsAL" value="250/500/100">250/500/100</option>
+                                    <!-- VA -->
+                                    <option class="VA optionsAL" value="30/60/20" id="ALVA">30/60/20</option>
+                                    <option class="VA optionsAL" value="30/60/25">30/60/25</option>
+                                    <option class="VA optionsAL" value="50/100/25">50/100/25</option>
+                                    <option class="VA optionsAL" value="50/100/50">50/100/50</option>
+                                    <option class="VA optionsAL" value="60/120/40">60/120/40</option>
+                                    <option class="VA optionsAL" value="60/120/50">60/120/50</option>
+                                    <option class="VA optionsAL" value="60/120/100">60/120/100</option>
+                                    <option class="VA optionsAL" value="100/300/50">100/300/50</option>
+                                    <option class="VA optionsAL" value="100/300/100">100/300/100</option>
+                                    <option class="VA optionsAL" value="250/500/100">250/500/100</option>
+                                    <!-- WA -->
+                                    <option class="WA optionsAL" value="25/50/10" id="ALWA">25/50/10</option>
+                                    <option class="WA optionsAL" value="25/50/25">25/50/25</option>
+                                    <option class="WA optionsAL" value="25/50/50">25/50/50</option>
+                                    <option class="WA optionsAL" value="50/100/10">50/100/10</option>
+                                    <option class="WA optionsAL" value="50/100/25">50/100/25</option>
+                                    <option class="WA optionsAL" value="50/100/50">50/100/50</option>
+                                    <option class="WA optionsAL" value="50/100/100">50/100/100</option>
+                                    <option class="WA optionsAL" value="100/300/10">100/300/10</option>
+                                    <option class="WA optionsAL" value="100/300/25">100/300/25</option>
+                                    <option class="WA optionsAL" value="100/300/50">100/300/50</option>
+                                    <option class="WA optionsAL" value="100/300/100">100/300/100</option>
+                                    <option class="WA optionsAL" value="250/500/10">250/500/10</option>
+                                    <option class="WA optionsAL" value="250/500/25">250/500/25</option>
+                                    <option class="WA optionsAL" value="250/500/50">250/500/50</option>
+                                    <option class="WA optionsAL" value="250/500/100">250/500/100</option>
+                                    <!-- SC -->
+                                    <option class="SC optionsAL" value="25/50/25" id="ALSC">25/50/25</option>
+                                    <option class="SC optionsAL" value="50/100/25">50/100/25</option>
+                                    <option class="SC optionsAL" value="50/100/50">50/100/50</option>
+                                    <option class="SC optionsAL" value="100/300/50">100/300/50</option>
+                                    <option class="SC optionsAL" value="100/300/100">100/300/100</option>
+                                    <option class="SC optionsAL" value="250/500/100">250/500/100</option>
+                                </select>
+                                <input type="text" id="" name="inputAL${index}" list="limitesAL" style="display:none">
+                                <div id="divAL${index}" style="display: none">Esta cobertura es obligatoria</div>
+                            </li>
+                            <li>
+                                <label for="checkPD${index}">PD: </label>
+                                <input type="checkbox" id="checkPD${index}" name="checkPD${index}">
+                            </li>
+                            <li style="display: none" class="liDeducible${index}">
+                                <label for="deducible${index}">Deducible: </label>
+                                <select id="deducible${index}">
+                                    <option value="$100">$100</option>
+                                    <option value="$250">$250</option>
+                                    <option value="$500">$500</option>
+                                    <option value="$750" selected>$750</option>
+                                    <option value="$1,000">$1,000</option>
+                                    <option value="$1,500">$1,500</option>
+                                    <option value="$2,000">$2,000</option>
+                                </select>
+                            </li>
+                            <li>
+                                <label for="checkUM${index}">UM: </label>
+                                <input type="checkbox" id="checkUM${index}" name="checkUM${index}">
+                            </li>
+                            <li style="display: none" class="liDeducible${index}">
+                                <label for="checkRoadside${index}">Roadside: </label>
+                                <input type="checkbox" id="checkRoadside${index}" name="checkRoadside${index}">
+                            </li>
+                            <li style="display: none" class="liDeducible${index}">
+                                <label for="checkGAP${index}">GAP / Payoff: </label>
+                                <input type="checkbox" id="checkGAP${index}" name="checkGAP${index}">
+                            </li>
+                            <li style="display: none" class="liDeducible${index}">
+                                <label for="checkRental${index}">Rental: </label>
+                                <input type="checkbox" id="checkRental${index}" name="checkRental${index}">
+                            </li>
+                            <li style="display: none" class="liRental${index}">
+                                <label for="rental${index}">Rental: </label>
+                                <select id="rental${index}">
+                                    <option value="$40 per day">$40 per day</option>
+                                    <option value="$50 per day">$50 per day</option>
+                                    <option value="$60 per day">$60 per day</option>
+                                </select>
+                            </li>
+                            <li>
+                                <label for="check${injury}${index}">${injury}: </label>
+                                <input type="checkbox" id="check${injury}${index}" name="check${injury}${index}">
+                            </li>
+                            <li style="display: none" class="li${injury}${index}">
+                                <label for="${injury}${index}">${injury}: </label>
+                                <input type="text" id="${injury}${index}" name="${injury}${index}" list="${injury}" value="">
+                            </li>
+                        </ul>
+                    `
+                const variableNameDeducible = `liDeducible${index}`;
+                var liDeducible= document.getElementsByClassName(variableNameDeducible);
+                window[variableNameDeducible] = liDeducible;
+                const variableNameCheck = `checkPD${index}`;
+                const checkPDInput = document.getElementById(variableNameCheck);
+                window[variableNameCheck] = checkPDInput;
+                window[variableNameCheck].addEventListener("change", ()=>{
+                    mostrarBloque(window[variableNameCheck], window[variableNameDeducible]);
+                    for (let a = 0; a < window[variableNameDeducible].length; a++) {
+                        const element = window[variableNameDeducible][a];
+                        var check = element.querySelector("input");
+                        if (check !== null) {
+                            check.checked = false
+                        }
+                    }
+                    
+                    
+                });
+                const varibleNameRental =  `liRental${index}`;
+                var liRental= document.getElementsByClassName(varibleNameRental);
+                window[varibleNameRental] = liRental;
+                const variableNameCheckRental = `checkRental${index}`;
+                const checkRentalInput = document.getElementById(variableNameCheckRental);
+                window[variableNameCheckRental] = checkRentalInput;
+                window[variableNameCheckRental].addEventListener("change", ()=>{mostrarBloque(window[variableNameCheckRental], window[varibleNameRental])});
+                const varibleNameInjury =  `li${injury}${index}`;
+                var liInjury = document.getElementsByClassName(varibleNameInjury);
+                window[varibleNameInjury] = liInjury;
+                const variableNameCheckInjury = `check${injury}${index}`;
+                const checkInjuryInput = document.getElementById(variableNameCheckInjury);
+                window[checkInjuryInput] = checkInjuryInput;
+                window[checkInjuryInput].addEventListener("change", ()=>{mostrarBloque(window[checkInjuryInput], window[varibleNameInjury])});
+
+                const liSnapshotElement = document.createElement('li');
+                liSnapshotElement.id = `liAuto${index}`;
+                olSnapshot.appendChild(liSnapshotElement);
+                liSnapshotElement.innerHTML = `
+                    <input type="checkbox" id="checkSnapshot${index}" name="checkSnapshot${index}">
+                    <label for="checkSnapshot${index}">${marca}</label>
+                    `
+                const liPluginElement = document.createElement('li');
+                liPluginElement.id = `liAuto${index}`;
+                olPlugin.appendChild(liPluginElement);
+                liPluginElement.innerHTML = `
+                    <input type="checkbox" id="checkPlug-in${index}" name="checkPlug-in${index}">
+                    <label for="checkPlug-in${index}">${marca}</label>
+                    `
+
+                
+                var address = extractAddressInfo(inputAddress.value);
+                const optionsAL = document.querySelectorAll(`.${address.state}`);
+                const optionVacia = document.getElementById("optionVacia");
+                var select = document.getElementsByName(`AL${index}`)[0];
+                var input = document.getElementsByName(`inputAL${index}`)[0];
+                if (optionsAL.length > 0) {
+                    select.id = `AL${index}`;
+                    input.id = "";
+                    select.style.display = "block";
+                    input.style.display = "none";
+                    optionsAL.forEach(e => {
+                        e.style.display = "block";
+                        optionVacia.style.display = "none";
+                    })
+                } else {
+                    select.id = "";
+                    input.id = `AL${index}`;
+                    select.style.display = "none";
+                    input.style.display = "block";
+                }
+            };
+        }
+
+        function extractAddressInfo(address){
+            var regex = /^([^,]+), (.+?), (.{2}) (\d{5})$/;
+            var match = address.match(regex);
+            
+            if (match) {
+                return {
+                street: match[1],
+                city: match[2],
+                state: match[3],
+                zipcode: match[4]
+                };
+            } else {
+                return null;
+            }
+        }
+
+        const inputAddress = document.getElementById("address");
+        const inputlicenciaState = document.getElementById("licenciaState");
+        inputAddress.addEventListener("change", ()=>{
+            var address = inputAddress.value;
+            var addressInfo = extractAddressInfo(address);
+            const errorAddress = document.getElementById("errorAddress");
+            if (addressInfo) {
+                if (errorAddress) {
+                    inputAddress.classList.remove("errorInput");
+                    errorAddress.style.display = "none";
+                }
+                
+                var street = addressInfo.street;
+                var city = addressInfo.city;
+                var state = addressInfo.state;
+                var zipcode = addressInfo.zipcode;
+
+                inputlicenciaState.value = state;
+
+                injury = [
+                    pip = ["PIP", "AR", "FL", "MD", "NJ", "WA"],
+                    medical = ["Medical", "AL", "AZ", "CO", "GA", "IL", "NV", "NM", "NC", "TX", "VA"]
+                ]
+                if(pip.indexOf(state) !== -1){
+                    injury = pip[0];
+                }else {
+                    injury = medical[0];
+                }
+
+
+
+            } else {
+                inputAddress.classList.add("errorInput");
+                errorAddress.style.display = "block";
+            }
+        })
+        
+        
+        function agregarAutosCheck(check, olMostrar) {
+            var inputAutos = document.getElementById("numeroVehicles").value;
+            var inputAuto1 = document.getElementById(`marca${0}`).value;
+            if (check.checked && !!inputAutos && !!inputAuto1) {
+                olMostrar.style.display = "block"
+            } else {
+                olMostrar.style.display = "none"
+            }
+        }
+        
+        const checkSnapshot = document.getElementById("checkSnapshot");
+        checkSnapshot.addEventListener("click", ()=>{
+            agregarAutosCheck(checkSnapshot, olSnapshot);
+            checkPlugin.checked = false;
+        });
+        const checkPlugin = document.getElementById("checkPlug-in");
+        checkPlugin.addEventListener("click", ()=>{
+            agregarAutosCheck(checkPlugin, olPlugin);
+            checkSnapshot.checked = false;
+        });
+
+        //Confirmación de datos
+        function validarCampo(campo) {
+            if (campo.value === "") {
+                campo.style.borderColor = "red"; 
+                // Mostrar pista
+                campo.nextElementSibling.textContent = "Por favor, complete este campo.";
+            } else {
+                campo.style.borderColor = "initial"; 
+                campo.nextElementSibling.textContent = ""; 
+            }
+        }
+
+        const formularioAuto = document.getElementById("formularioAuto")
+        function confirmacion() {
+            const fields = [];
+            
+            const address = extractAddressInfo(document.getElementById("address").value);
+
+            // Required fields
+            const requiredFields = [
+                {
+                id: "nombre",
+                format: /^[a-zA-Z\s]+$/,
+                errorMessage: "El nombre debe contener solo letras"
+                },
+                {
+                id: "apellido",
+                format: /^[a-zA-Z\s]+$/,
+                errorMessage: "El apellido debe contener solo letras"
+                },
+                {
+                id: "telefono",
+                format: /^\d{10}$/,
+                errorMessage: "El teléfono debe contener solo números"
+                },
+                {
+                id: "genero",
+                format: /^[a-zA-Z]+$/,
+                errorMessage: "El genero debe seleccionarse"
+                },
+                {
+                id: "address",
+                format: /^\d{1,6} [A-Za-z0-9 #.-]+, [A-Za-z ]+, [A-Z]{2} \d{5}$/,
+                errorMessage: "Esta mal el formato de la dirección"
+                },
+                {
+                id: "county",
+                format: /^[a-zA-Z\s]+$/,
+                errorMessage: "Esta mal el formato del condado"
+                },
+                {
+                id: "licencia",
+                format: /^\b[A-Z0-9]+\b$/,
+                errorMessage: "La licencia no debe contener guiones ni letras en minuscula"
+                },
+                {
+                id: "licenciaState",
+                format: /^[A-Z]{2,}$/,
+                errorMessage: "El estado debe estar en Mayuscula"
+                },
+                {
+                id: "ocupacion",
+                format: /^[a-zA-Z\s]+$/,
+                errorMessage: "La ocupacion debe contener solo letras"
+                },
+                {
+                id: "numeroVehicles",
+                format: /^[0-9]+$/,
+                errorMessage: "Debes completar este campo"
+                },
+                {
+                id: "levelStudies",
+                format: /^[a-zA-Z\s]+$/,
+                errorMessage: "Los niveles de estudio deben seleccionarse"
+                },
+                {
+                id: "typeLicense",
+                format: /^[a-zA-Z\s]+$/,
+                errorMessage: "El tipo de licencia debe seleccionarse"
+                },
+                {
+                id: "DOB",
+                format: /^(0[1-9]|1[0-2])\/(0[1-9]|[12]\d|3[01])\/(19|20)\d{2}$/,
+                errorMessage: "La fecha de nacimiento debe tener formato MM/DD/AAAA"
+                }
+            ];
+
+            // Check required fields
+            let isValid = true;
+            for (const field of requiredFields) {
+                const input = document.getElementById(field.id);
+                if (!field.format.test(input.value.trim())) {
+                isValid = false;
+                input.classList.add("errorInput");
+                const errorElement = input.nextElementSibling;
+                if (errorElement) {
+                    errorElement.textContent = field.errorMessage;
+                } else {
+                    const errorSpan = document.createElement("div");
+                    errorSpan.textContent = field.errorMessage;
+                    //errorSpan.classList.add("errorInput");
+                    input.parentNode.appendChild(errorSpan);
+                }
+                } else {
+                    input.classList.remove("errorInput");
+                    const errorElement = input.nextElementSibling;
+                    if (errorElement) {
+                        errorElement.remove();
+                    }
+                    var newField = {
+                        id: field.id,
+                        campo: field.id,
+                        informacion: input.value.toUpperCase()
+                    }
+                    addField(fields, newField)
+                    if (field.id == "nombre") {
+                        var nombres = input.value.toUpperCase().split(" ");
+                        var firstName = nombres[0];
+                        var Middlename = nombres[1];
+                        var newField = {
+                            id: "First Name",
+                            campo: "First Name",
+                            informacion: firstName
+                        }
+                        addField(fields, newField);
+                        if (Middlename == undefined) {
+                            var newField = {
+                                id: "Middle name",
+                                campo: "Middle name",
+                                informacion: "-"
+                            }
+                            addField(fields, newField);
+                        } else {
+                            var newField = {
+                                id: "Middle name",
+                                campo: "Middle name",
+                                informacion: Middlename
+                            }
+                            addField(fields, newField);
+                        }        
+                    }
+                    if (field.id == "address") {
+                        for(var dato in address){
+                            var newField = {
+                                id: String(dato).toString(),
+                                campo: String(dato).toString(),
+                                informacion: address[dato].toUpperCase()
+                            }
+                            addField(fields, newField);
+                        }
+                    }
+                    if (field.id == "licencia") {
+                        var licencia = input.value
+                        var licenciaState = document.getElementById("licenciaState").value;
+                        var typeLicense = document.getElementById("typeLicense").value;
+                        var newField = {
+                            id: "licencia",
+                            campo: "licencia",
+                            informacion: `${licencia}/${typeLicense} / ${licenciaState}`
+                        }
+                        addField(fields, newField);
+                    }
+                }
+            }
+
+            //Confirmación de información de drivers
+            const numeroDrivers = Number(document.getElementById("numeroDrivers").value);
+            if (numeroDrivers >= 1) {
+                for (let index = 0; index < numeroDrivers; index++) {
+                    const checkExcluded = document.getElementById(`excluded${index}`);
+                    if (checkExcluded.checked) {
+                        var driversFields = [
+                        {
+                        id: `nombre${index}`,
+                        format: /^[a-zA-Z\s]+$/,
+                        errorMessage: `El nombre debe contener solo letras`,
+                        requerido: true
+                        },
+                        {
+                        id: `apellido${index}`,
+                        format: /^[a-zA-Z\s]+$/,
+                        errorMessage: `El apellido debe contener solo letras`,
+                        requerido: true
+                        },
+                        {
+                        id: `genero${index}`,
+                        format: /^[a-zA-Z]+$/,
+                        errorMessage: `El genero debe seleccionarse`,
+                        requerido: true
+                        },
+                        {
+                        id: `relation${index}`,
+                        format: /^[a-zA-Z]+$/,
+                        errorMessage: `La relacion debe seleccionarse`,
+                        requerido: true
+                        },
+                        {
+                        id: `licencia${index}`,
+                        format: /^\b[A-Z0-9]+\b$/,
+                        errorMessage: `La licencia no debe contener guiones ni letras en minuscula`,
+                        requerido: false
+                        },
+                        {
+                        id: `licenciaState${index}`,
+                        format: /^[A-Z]{2,}$/,
+                        errorMessage: `El estado debe estar en Mayuscula`,
+                        requerido: false
+                        },
+                        {
+                        id: `ocupacion${index}`,
+                        format: /^[a-zA-Z\s]+$/,
+                        errorMessage: `La ocupacion debe contener solo letras`,
+                        requerido: true
+                        },
+                        {
+                        id: `excluded${index}`,
+                        format: /^[a-zA-Z\s]+$/,
+                        errorMessage: `Ojo`,
+                        requerido: false
+                        },
+                        {
+                        id: `levelStudies${index}`,
+                        format: /^[a-zA-Z\s]+$/,
+                        errorMessage: `Ojo`,
+                        requerido: true
+                        },
+                        {
+                        id: `Sr22${index}`,
+                        format: /^[a-zA-Z\s]+$/,
+                        errorMessage: `Ojo`,
+                        requerido: false
+                        },
+                        {
+                        id: `DOB${index}`,
+                        format: /^(0[1-9]|1[0-2])\/(0[1-9]|[12]\d|3[01])\/(19|20)\d{2}$/,
+                        errorMessage: "La fecha de nacimiento debe tener formato MM/DD/AAAA",
+                        requerido: true
+                        }]
+                    } else {
+                        var driversFields = [
+                        {
+                        id: `nombre${index}`,
+                        format: /^[a-zA-Z\s]+$/,
+                        errorMessage: `El nombre debe contener solo letras`,
+                        requerido: true
+                        },
+                        {
+                        id: `apellido${index}`,
+                        format: /^[a-zA-Z\s]+$/,
+                        errorMessage: `El apellido debe contener solo letras`,
+                        requerido: true
+                        },
+                        {
+                        id: `genero${index}`,
+                        format: /^[a-zA-Z]+$/,
+                        errorMessage: `El genero debe seleccionarse`,
+                        requerido: true
+                        },
+                        {
+                        id: `relation${index}`,
+                        format: /^[a-zA-Z]+$/,
+                        errorMessage: `La relacion debe seleccionarse`,
+                        requerido: true
+                        },
+                        {
+                        id: `licencia${index}`,
+                        format: /^\b[A-Z0-9]+\b$/,
+                        errorMessage: `La licencia no debe contener guiones ni letras en minuscula`,
+                        requerido: true
+                        },
+                        {
+                        id: `licenciaState${index}`,
+                        format: /^[A-Z]{2,}$/,
+                        errorMessage: `El estado debe estar en Mayuscula`,
+                        requerido: true
+                        },
+                        {
+                        id: `ocupacion${index}`,
+                        format: /^[a-zA-Z\s]+$/,
+                        errorMessage: `La ocupacion debe contener solo letras`,
+                        requerido: true
+                        },{
+                        id: `excluded${index}`,
+                        format: /^[a-zA-Z\s]+$/,
+                        errorMessage: `La ocupacion debe contener solo letras`,
+                        requerido: false
+                        },
+                        {
+                        id: `levelStudies${index}`,
+                        format: /^[a-zA-Z\s]+$/,
+                        errorMessage: `Ojo`,
+                        requerido: true
+                        },
+                        {
+                        id: `Sr22${index}`,
+                        format: /^[a-zA-Z\s]+$/,
+                        errorMessage: `Ojo`,
+                        requerido: false
+                        },
+                        {
+                        id: `excluded${index}`,
+                        format: /^[a-zA-Z\s]+$/,
+                        errorMessage: `Ojo`,
+                        requerido: false
+                        },
+                        {
+                        id: `DOB${index}`,
+                        format: /^(0[1-9]|1[0-2])\/(0[1-9]|[12]\d|3[01])\/(19|20)\d{2}$/,
+                        errorMessage: "La fecha de nacimiento debe tener formato MM/DD/AAAA",
+                        requerido: true
+                        }]
+                    }
+
+                    for (const field of driversFields) {
+                        const input = document.getElementById(field.id);
+                        if (!field.format.test(input.value.trim()) && field.requerido) {
+                            isValid = false;
+                            input.classList.add("errorInput");
+                            const errorElement = input.nextElementSibling;
+                            if (errorElement) {
+                            errorElement.textContent = `Por favor, complete ${field.errorMessage}`;
+                            } else {
+                            const errorSpan = document.createElement("div");
+                            errorSpan.textContent = `Por favor, complete ${field.errorMessage}`;
+                            input.parentNode.appendChild(errorSpan);
+                            }
+                        } else {
+                            input.classList.remove("errorInput");
+                            const errorElement = input.nextElementSibling;
+                            if (errorElement) {
+                                errorElement.remove();
+                            }
+                            var newField = {
+                                id: field.id,
+                                campo: field.id,
+                                informacion: input.value.toUpperCase()
+                            }
+                            addField(fields, newField);
+                            var relation = document.getElementById(`relation${index}`)
+                            if (field.id == `ocupacion${index}`) {
+                                var newField = {
+                                    id: `Ocupation ${relation.value}`,
+                                    campo: `Ocupation ${relation.value}`,
+                                    informacion: input.value.toUpperCase()
+                                }
+                                addField(fields, newField);
+                                var newField = {
+                                    id: `Check${relation.value}`,
+                                    campo: `Check${relation.value}`,
+                                    informacion: true,
+                                    tipo: "check"
+                                }
+                                addField(fields, newField);
+                            }
+                            if (field.id == `levelStudies${index}`) {
+                                var newField = {
+                                    id: `Level of studies ${relation.value}`,
+                                    campo: `Level of studies ${relation.value}`,
+                                    informacion: input.value.toUpperCase()
+                                }
+                                addField(fields, newField);
+                            }
+                        }
+
+                        var checkExcludedDrivers = document.getElementById(`excluded${index}`);
+                        if (checkExcludedDrivers.checked) {
+                            var newField = {
+                                id: `licencia${index}`,
+                                campo: `licencia${index}`,
+                                informacion: `-`
+                            }
+                            addField(fields, newField);
+                            var newField = {
+                                id: `issueDate${index}`,
+                                campo: `issueDate${index}`,
+                                informacion: "Excluded"
+                            }
+                            addField(fields, newField);
+                        }else{
+                            var licencia = document.getElementById(`licencia${index}`).value
+                            var licenciaState = document.getElementById(`licenciaState${index}`).value;
+                            var typeLicense = document.getElementById(`typeLicense${index}`).value;
+                            var newField = {
+                                id: `licencia${index}`,
+                                campo: `licencia${index}`,
+                                informacion: `${licencia}/${typeLicense} / ${licenciaState}`
+                            }
+                            addField(fields, newField);
+                            var dobSeparada = document.getElementById("DOB").value.split('/');
+                            var issueDate = `${dobSeparada[0]}/${Math.floor(Math.random() * 28) + 1}/${Number(dobSeparada[2])+20}`
+                            var newField = {
+                                id: `issueDate${index}`,
+                                campo: `issueDate${index}`,
+                                informacion: issueDate
+                            }
+                            addField(fields, newField);
+                        }
+
+                        if (field.id == `excluded${index}` || field.id == `Sr22${index}`) {
+                            var exclude = document.getElementById(`excluded${index}`).checked;
+                            var sr22 = document.getElementById(`Sr22${index}`).checked;
+                            if (exclude == true && sr22 == true){
+                                isValid = false;
+                                input.classList.add("errorInput");
+                                const errorElement = input.nextElementSibling;
+                                if (errorElement) {
+                                errorElement.textContent = `No se pueden marcar ambas a la vez`;
+                                } else {
+                                const errorSpan = document.createElement("div");
+                                errorSpan.textContent = `No se pueden marcar ambas a la vez`;
+                                input.parentNode.appendChild(errorSpan);
+                                }
+                            } else {
+                                input.classList.remove("errorInput");
+                                const errorElement = input.nextElementSibling;
+                                if (errorElement) {
+                                    errorElement.remove();
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+
+            var entity = [];
+            var AddressFinancial = [];
+            const snapshots = [] ;
+            const plugins = [];
+            //Confirmación de información de autos
+            const numeroAutos = Number(document.getElementById("numeroVehicles").value);
+            if (numeroAutos >= 1) {
+                for (let index = 0; index < numeroAutos; index++) {
+                    const useVehicle = document.getElementById(`useVehicle${index}`).value;
+                    var autosFields = [
+                    {
+                    id: `marca${index}`,
+                    format: /^[a-zA-Z\s]+$/,
+                    errorMessage: `La marca debe contener solo letras`,
+                    requerido: true
+                    },
+                    {
+                    id: `model${index}`,
+                    format: /^[[A-Za-z0-9-\s]+$/,
+                    errorMessage: `El modelo debe contener solo letras y números`,
+                    requerido: true
+                    },
+                    {
+                    id: `year${index}`,
+                    format: /^[0-9]+$/,
+                    errorMessage: `El año debe contener solo números`,
+                    requerido: true
+                    },
+                    {
+                    id: `vin${index}`,
+                    format: /^[A-Z0-9]+$/,
+                    errorMessage: `El VIN debe contener solo letras mayuscula y números`,
+                    requerido: true
+                    },
+                    {
+                    id: `longHasAuto${index}`,
+                    format: /^[a-zA-Z0-9_\s/-]+$/,
+                    errorMessage: `El campo debe contener solo números, letras o simbolos como, - /`,
+                    requerido: true
+                    },
+                    {
+                    id: `useVehicle${index}`,
+                    format: /^[a-zA-Z]+$/,
+                    errorMessage: `Debe estar seleccionado`,
+                    requerido: true
+                    },
+                    {
+                    id: `financed${index}`,
+                    format: /^[a-zA-Z]+$/,
+                    errorMessage: `Debe estar seleccionado`,
+                    requerido: true
+                    }]
+                    if (useVehicle == "Commute") {
+                        var newField = {
+                        id: `usos${index}`,
+                        format: /^[4-7]{1}$/,
+                        errorMessage: `El uso debe contener un número de 4 a 7`,
+                        requerido: true
+                        };
+                        addField(autosFields, newField);
+                        
+                        var newField = {
+                        id: `miles${index}`,
+                        format: /^[1-9]{1,3}$/,
+                        errorMessage: `Las millas no pueden ser mayor a 999`,
+                        requerido: true
+                        };
+                        addField(autosFields, newField);
+                    }
+                    const financed = document.getElementById(`financed${index}`).value;
+                    if (financed == "Financed") {
+                        var newField = {
+                        id: `finance${index}`,
+                        format: /^[a-zA-Z\s]+$/,
+                        errorMessage: `La financiera solo debe contener letras`,
+                        requerido: false
+                        };
+                        addField(autosFields, newField);
+                        
+                        var newField = {
+                        id: `addressFinance${index}`,
+                        format: /^\d{1,4} [A-Za-z0-9 #.-]+, [A-Za-z ]+, [A-Z]{2} \d{5}$/,
+                        errorMessage: `No es una dirección valida`,
+                        requerido: false
+                        };
+                        addField(autosFields, newField);
+                    }
+
+                    for (const field of autosFields) {
+                        const input = document.getElementById(field.id);
+                        if (!field.format.test(input.value.trim()) && field.requerido) {
+                            isValid = false;
+                            input.classList.add("errorInput");
+                            const errorElement = input.nextElementSibling;
+                            if (errorElement) {
+                            errorElement.textContent = field.errorMessage;
+                            } else {
+                            const errorSpan = document.createElement("div");
+                            errorSpan.textContent = field.errorMessage;
+                            input.parentNode.appendChild(errorSpan);
+                            }
+                        } else {
+                            input.classList.remove("errorInput");
+                            const errorElement = input.nextElementSibling;
+                            if (errorElement) {
+                                errorElement.remove();
+                            }
+                            var newField = {
+                                id: field.id,
+                                campo: field.id,
+                                informacion: input.value.toUpperCase()
+                            }
+                            addField(fields, newField);
+
+                            if(field.id == `addressFinance${index}`){
+                                var VIN = document.getElementById(`vin${index}`).value
+                                var lastVIN = VIN.match(/\D*(\d+)$/)[1];
+                                var addressFinanciera = document.getElementById(field.id).value;
+                                var info = `${lastVIN}: ${addressFinanciera}`
+                                AddressFinancial.push(info)
+                                console.log(AddressFinancial);
+                                
+                            }
+                            if(field.id == `finance${index}`){
+                                var VIN = document.getElementById(`vin${index}`).value
+                                var lastVIN = VIN.match(/\D*(\d+)$/)[1];
+                                var financiera = document.getElementById(field.id).value;
+                                var info = `${lastVIN}: ${financiera}`
+                                entity.push(info)
+                                console.log(entity);
+                                
+                            }
+
+                            var inputMarca = document.getElementById(`marca${index}`)
+                            if (!!inputMarca) {
+                                var inputLimiteAL = document.getElementById(`AL${index}`);
+                                var divAL = document.getElementById(`divAL${index}`);
+                                if (inputLimiteAL.value == "") {
+                                    isValid = false;
+                                    inputLimiteAL.classList.add("errorInput");
+                                    divAL.style.display = "block";
+                                }else{
+                                    divAL.style.display = "none";
+                                    inputLimiteAL.classList.remove("errorInput");
+                                    var newField = {
+                                        id: inputLimiteAL.id,
+                                        campo: inputLimiteAL.id,
+                                        informacion: inputLimiteAL.value
+                                    }
+                                    addField(fields, newField);
+                                }
+                                var fieldsCoberturas = [{
+                                        idCheck: `checkPD${index}`,
+                                        id: `deducible${index}`,
+                                        obligatorio: false,
+                                        tipo: "check"
+                                    },{
+                                        idCheck: `checkUM${index}`,
+                                        id: `AL${index}`,
+                                        obligatorio: false,
+                                        tipo: "check"
+                                    },{
+                                        idCheck: `checkRoadside${index}`,
+                                        id: true,
+                                        obligatorio: false,
+                                        tipo: "check"
+                                    },{
+                                        idCheck: `checkGAP${index}`,
+                                        id: true,
+                                        obligatorio: false,
+                                        tipo: "check"
+                                    },{
+                                        idCheck: `checkRental${index}`,
+                                        id: `rental${index}`,
+                                        obligatorio: false,
+                                        tipo: "check"
+                                    },{
+                                        idCheck: `check${injury}${index}`,
+                                        id: `${injury}${index}`,
+                                        obligatorio: false,
+                                        tipo: "check"
+                                    }]
+                                    console.log(address);
+                                    if (address.state == "FL" || address.state == "MD" || address.state == "NJ") {
+                                        
+                                        var newField = {
+                                        idCheck: `check${injury}${index}`,
+                                        id: `${injury}${index}`,
+                                        obligatorio: true,
+                                        tipo: "check"
+                                        }
+                                        addFieldCobertura(fieldsCoberturas, newField);
+                                        console.log(fieldsCoberturas);
+
+                                    }
+                                    if (address.state == "IL" || address.state == "MD" || address.state == "NJ" || address.state == "VA" || address.state == "WA" || address.state == "SC") {
+                                        var newField = {
+                                        idCheck: `checkUM${index}`,
+                                        id: `AL${index}`,
+                                        obligatorio: true,
+                                        tipo: "check"
+                                        }
+                                        addFieldCobertura(fieldsCoberturas, newField);
+                                    }
+                                    for (const field of fieldsCoberturas) {
+                                        var checkPD = document.getElementById(`checkPD${index}`);
+                                        var checkCobertura = document.getElementById(field.idCheck);
+                                        if (field.obligatorio && checkCobertura.checked == false) {
+                                            isValid = false;
+                                            checkCobertura.classList.add("errorInput");
+                                            const errorElement = checkCobertura.nextElementSibling;
+                                            if (errorElement) {
+                                            errorElement.textContent = "Esta cobertura es obligatoria";
+                                            } else {
+                                            const errorSpan = document.createElement("div");
+                                            errorSpan.textContent = "Esta cobertura es obligatoria";
+                                            checkCobertura.parentNode.appendChild(errorSpan);
+                                            }
+                                        } else {
+                                            try{
+                                                checkCobertura.classList.remove("errorInput");
+                                                const errorElement = checkCobertura.nextElementSibling;
+                                                if (errorElement) {
+                                                    errorElement.remove();
+                                                }
+                                            }catch(error){}
+                                        }
+                                        if (field.id == true) {
+                                            var newField = {
+                                                    id: field.idCheck,
+                                                    campo: field.idCheck,
+                                                    informacion: checkCobertura.checked,
+                                                    tipo: "check"
+                                                }
+                                                addField(fields, newField);
+                                        } else {
+                                            if (checkCobertura.checked && field.idCheck !== `checkUM${index}` ) {
+                                            var newField = {
+                                                id: field.idCheck,
+                                                campo: field.idCheck,
+                                                informacion: checkCobertura.checked,
+                                                tipo: "check"
+                                                }
+                                                addField(fields, newField);
+                                                var limiteCobertura = document.getElementById(field.id).value;
+                                                var newField = {
+                                                    id: field.id,
+                                                    campo: field.id,
+                                                    informacion: limiteCobertura,
+                                                    tipo: "text"
+                                                }
+                                                addField(fields, newField);
+                                            }
+                                            //UM/UIM
+                                            if (field.idCheck == `checkUM${index}` && checkCobertura.checked) {
+                                                var newField = {
+                                                    id: field.idCheck,
+                                                    campo: field.idCheck,
+                                                    informacion: checkCobertura.checked,
+                                                    tipo: "check"
+                                                }
+                                                addField(fields, newField);
+                                                var limiteCobertura = document.getElementById(field.id).value.split("/");
+                                                var UM = `${limiteCobertura[0]}/${limiteCobertura[1]}`
+                                                var newField = {
+                                                    id: `UM${index}`,
+                                                    campo: `UM${index}`,
+                                                    informacion: UM,
+                                                    tipo: "text"
+                                                }
+                                                var UIM = limiteCobertura[2]
+                                                addField(fields, newField);var newField = {
+                                                    id: `UIM${index}`,
+                                                    campo: `UIM${index}`,
+                                                    informacion: UIM,
+                                                    tipo: "text"
+                                                }
+                                                addField(fields, newField);
+                                            }
+                                        }
+                                        //Agregar ultimos del VIN
+                                        var VIN = document.getElementById(`vin${index}`).value
+                                        var lastVIN = VIN.match(/\D*(\d+)$/)[1];
+                                        if (field.idCheck == `checkRoadside${index}` || field.idCheck == `checkGAP${index}` || field.idCheck == `checkRental${index}` || field.idCheck == `check${injury}${index}`) {
+                                            if (checkCobertura.checked) {
+                                                var newField = {
+                                                    id: `lastVIN${index}`,
+                                                    campo: `lastVIN${index}`,
+                                                    informacion: lastVIN
+                                                }
+                                                addField(fields, newField);
+                                            }
+                                        }
+                                        if (checkPlugin.checked) {
+                                            var checks = olPlugin.querySelectorAll("input");
+                                            for (let a = 0; a < checks.length; a++) {
+                                                const element = checks[a];
+                                                if (element.checked) {
+                                                    plugins.push(lastVIN);
+                                                }
+                                            }
+                                        }
+                                        if (checkSnapshot.checked) {
+                                            var checks = olSnapshot.querySelectorAll("input");
+                                            for (let a = 0; a < checks.length; a++) {
+                                                const element = checks[a];
+                                                if (element.checked) {
+                                                    snapshots.push(lastVIN);
+                                                }
+                                            }
+                                        }
+
+                                    }
+                                        
+                                 
+
+                            }
+                        }
+                    }
+                    //Agregar zip al auto
+                    var newField = {
+                        id: `zipcode${index}`,
+                        campo: `zipcode${index}`,
+                        informacion: address.zipcode
+                    }
+                    addField(fields, newField);
+                    //Agregar ultimos del VIN
+                    var VIN = document.getElementById(`vin${index}`).value
+                    var lastVIN = VIN.match(/\D*(\d+)$/)[1];
+                    var newField = {
+                        id: `LastVIN${index}`,
+                        campo: `LastVIN${index}`,
+                        informacion: lastVIN
+                    }
+                    addField(fields, newField);
+                }
+            }
+
+
+            //Extraer DOB
+            const fechaHoy = new Date();
+            var inputsDOB = document.getElementsByClassName("DOBs");
+            DOBTitularSeparada = inputsDOB[0].value.split("/")
+            for (let index = 0; index < inputsDOB.length; index++) {
+                var inputDOB = inputsDOB[index];
+                DOBSeparada = inputDOB.value.split('/');
+                var edad = Number(fechaHoy.getFullYear() - DOBSeparada[2]);
+                if(edad < 15 || edad > 100 || isNaN(edad)){
+                    isValid = false;
+                    inputDOB.classList.add("errorInput");
+                    const errorElement = inputDOB.nextElementSibling;
+                    if (errorElement) {
+                    errorElement.textContent = "La fecha de nacimiento no es correcta";
+                    } else {
+                    const errorSpan = document.createElement("div");
+                    errorSpan.textContent = "La fecha de nacimiento no es correcta";
+                    inputDOB.parentNode.appendChild(errorSpan);
+                    }
+                }else{
+                    DOB = inputDOB.value;
+                    var newField = {
+                        id: inputDOB.id,
+                        campo: inputDOB.id,
+                        informacion: DOB
+                    }
+                    addField(fields, newField);
+                    var issueDate = `${DOBSeparada[0]}/${Math.floor(Math.random() * 28) + 1}/${Number(DOBSeparada[2])+20}`
+                    var newField = {
+                        id: `issueDate${index}`,
+                        campo: `issueDate${index}`,
+                        informacion: issueDate
+                    }
+                    addField(fields, newField);
+                }
+            }
+            var newField = {
+                id: "year",
+                campo: "year",
+                informacion: DOBTitularSeparada[2]
+            }
+            addField(fields, newField);
+            var newField = {
+                id: "month",
+                campo: "month",
+                informacion: DOBTitularSeparada[0]
+            }
+            addField(fields, newField);
+            var newField = {
+                id: "day",
+                campo: "day",
+                informacion: DOBTitularSeparada[1]
+            }
+            addField(fields, newField);
+            
+            //Confirmar correo
+            const expresionCorreo = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            const inputCorreo = document.getElementById("email");
+            var correo = inputCorreo.value;
+            if (correo  !== "" && expresionCorreo.test(correo.trim()) == false) {
+                isValid = false;
+                inputCorreo.classList.add("errorInput");
+                const errorElement = inputCorreo.nextElementSibling;
+                if (errorElement) {
+                    errorElement.textContent = `Introduce una dirección de correo correcta`;
+                } else {
+                    const errorSpan = document.createElement("div");
+                    errorSpan.textContent = `Introduce una dirección de correo correcta`;
+                    inputCorreo.parentNode.appendChild(errorSpan);
+                }
+            }else {
+                inputCorreo.classList.remove("errorInput");
+                const errorElement = inputCorreo.nextElementSibling;
+                if (errorElement) {
+                    errorElement.remove();
+                }
+                if (correo  == "") {
+                    var newField = {
+                    id: inputCorreo.id,
+                    campo: inputCorreo.id,
+                    informacion: "pendiente@gmail.com"
+                }
+                addField(fields, newField);
+                } else {
+                    var newField = {
+                    id: inputCorreo.id,
+                    campo: inputCorreo.id,
+                    informacion: correo
+                }
+                addField(fields, newField);
+                }
+            }
+
+            //Confirmar Mailing address
+            if (checkAddress.checked) {
+                const fieldMailingAddress = [
+                    {
+                    id: "mailingAddress",
+                    format: /^\d{1,4} [A-Za-z0-9 #.-]+, [A-Za-z ]+, [A-Z]{2} \d{5}$/,
+                    errorMessage: "La dirección tiene un mal formato"
+                    },
+                    {
+                    id: "mailingCounty",
+                    format: /^[a-zA-Z\s]+$/,
+                    errorMessage: "El condado debe contener solo letras"
+                    }
+                ]
+                for (const field of fieldMailingAddress) {
+                    const input = document.getElementById(field.id);
+                    if (!field.format.test(input.value.trim()) && checkAddress.checked) {
+                        isValid = false;
+                        input.classList.add("errorInput");
+                        const errorElement = input.nextElementSibling;
+                        if (errorElement) {
+                            errorElement.textContent = field.errorMessage;
+                        } else {
+                            const errorSpan = document.createElement("div");
+                            errorSpan.textContent = field.errorMessage;
+                            input.parentNode.appendChild(errorSpan);
+                        }
+                    } else {
+                        input.classList.remove("errorInput");
+                        const errorElement = input.nextElementSibling;
+                        if (errorElement) {
+                            errorElement.remove();
+                        }
+                        var mailingAddress = extractAddressInfo(document.getElementById("mailingAddress").value);
+                        for(var dato in mailingAddress){
+                            var newField = {
+                                id: String(dato).toString() + "Mailing",
+                                campo: String(dato).toString() + "Mailing",
+                                informacion: mailingAddress[dato].toUpperCase()
+                            }
+                            addField(fields, newField);
+                        }
+                        var mailingCounty = document.getElementById("mailingCounty").value;
+                        var newField = {
+                            id: "countyMailing",
+                            campo: "countyMailing",
+                            informacion: mailingCounty.toUpperCase()
+                        }
+                        addField(fields, newField);
+                    }
+                    
+                } 
+            } else {
+                for(var dato in address){
+                    var newField = {
+                        id: String(dato).toString() + "Mailing",
+                        campo: String(dato).toString() + "Mailing",
+                        informacion: address[dato].toUpperCase()
+                    }
+                    addField(fields, newField);
+                }
+                var county = document.getElementById("county").value;
+                var newField = {
+                    id: "countyMailing",
+                    campo: "countyMailing",
+                    informacion: county.toUpperCase()
+                }
+                addField(fields, newField);
+            }
+            
+            //Financiera
+            if (financiera == "") {
+                var newField = {
+                    id: "Entity",
+                    campo: "Entity",
+                    informacion: "-"
+                }
+                addField(fields, newField);
+                var newField = {
+                    id: "AddressFinancial",
+                    campo: "AddressFinancial",
+                    informacion: "-"
+                }
+                addField(fields, newField);
+            } else {
+                var financiera = entity.join(" / ");
+                var newField = {
+                    id: "Entity",
+                    campo: "Entity",
+                    informacion: financiera
+                }
+                addField(fields, newField);
+                var addressFinanciera = AddressFinancial.join(" / ");
+                var newField = {
+                    id: "AddressFinancial",
+                    campo: "AddressFinancial",
+                    informacion: addressFinanciera
+                }
+                addField(fields, newField);
+            }
+            
+            //Confirmar priorPolicy
+            const fieldPriorPolicy = [
+                {
+                id: "currentInsurance",
+                format: /^[A-Za-z\s]+$/,
+                errorMessage: "La compañía tiene un mal formato"
+                },
+                {
+                id: "amount",
+                format: /^[a-zA-Z0-9\s]+$/,
+                errorMessage: "El precio debe completarse sin signos"
+                }
+            ]
+            for (const field of fieldPriorPolicy) {
+                const input = document.getElementById(field.id);
+                if (!field.format.test(input.value.trim()) && priorPolicy.checked) {
+                    isValid = false;
+                    input.classList.add("errorInput");
+                    const errorElement = input.nextElementSibling;
+                    if (errorElement) {
+                        errorElement.textContent = field.errorMessage;
+                    } else {
+                        const errorSpan = document.createElement("div");
+                        errorSpan.textContent = field.errorMessage;
+                        input.parentNode.appendChild(errorSpan);
+                    }
+                } else {
+                    input.classList.remove("errorInput");
+                    const errorElement = input.nextElementSibling;
+                    if (errorElement) {
+                        errorElement.remove();
+                    }
+                }
+                if (priorPolicy.checked) {
+                    var newField = {
+                        id: priorPolicy.id,
+                        campo: priorPolicy.id,
+                        informacion: "Yes"
+                    }
+                    addField(fields, newField);
+                    var newField = {
+                        id: field.id,
+                        campo: field.id,
+                        informacion: input.value
+                    }
+                    addField(fields, newField);
+                }else{
+                    var newField = {
+                        id: priorPolicy.id,
+                        campo: priorPolicy.id,
+                        informacion: "No"
+                    }
+                    addField(fields, newField);
+                    var newField = {
+                        id: field.id,
+                        campo: field.id,
+                        informacion: "-"
+                    }
+                    addField(fields, newField);
+                }
+                
+            }
+            
+            //Confirmar homeowner
+            const inputALRenter = document.getElementById("ALRenter");
+            var ALRenter = inputALRenter.value
+            if (homeowner.checked) {
+                var newField = {
+                    id: inputALRenter.id,
+                    campo: inputALRenter.id,
+                    informacion: "Yes"
+                }
+                addField(fields, newField);
+            } else {
+                if (!ALRenter) {
+                    var newField = {
+                        id: inputALRenter.id,
+                        campo: inputALRenter.id,
+                        informacion: "No / No policy"
+                    }
+                    addField(fields, newField);
+                }else{
+                    var newField = {
+                        id: inputALRenter.id,
+                        campo: inputALRenter.id,
+                        informacion: "No / " + ALRenter
+                    }
+                    addField(fields, newField);
+                }
+            }
+
+            //Confirmar póliza con progressive
+            const inputcompanyDiscount = document.getElementById("companyDiscount");
+            if (checkProgressive.checked) {
+                if (inputcompanyDiscount.value == "") {
+                    isValid = false;
+                    inputcompanyDiscount.classList.add("errorInput");
+                    const errorElement = inputcompanyDiscount.nextElementSibling;
+                    if (errorElement) {
+                        errorElement.textContent = "Debes completar este campo";
+                    } else {
+                        const errorSpan = document.createElement("div");
+                        errorSpan.textContent = "Debes completar este campo";
+                        inputcompanyDiscount.parentNode.appendChild(errorSpan);
+                    }
+
+                }else{
+                    var newField = {
+                        id: checkProgressive.id,
+                        campo: checkProgressive.id,
+                        informacion: checkProgressive.checked,
+                        tipo: "check"
+                    }
+                    addField(fields, newField);
+                    var newField = {
+                        id: inputcompanyDiscount.id,
+                        campo: inputcompanyDiscount.id,
+                        informacion: inputcompanyDiscount.value
+                    }
+                    addField(fields, newField);
+                }
+            }else{
+                inputcompanyDiscount.classList.remove("errorInput");
+                const errorElement = inputcompanyDiscount.nextElementSibling;
+                if (errorElement) {
+                    errorElement.remove();
+                }
+                var newField = {
+                    id: "CheckCompanyNo",
+                    campo: "CheckCompanyNo",
+                    informacion: true,
+                    tipo: "check"
+                }
+                addField(fields, newField);
+            }
+
+            //Agregar checks
+            const descuentos = [{
+                id: "checkFull",
+                campo: "PaymentFull"
+            },{
+                id: "checkPaperless",
+                campo: "Paperless"
+            },{
+                id: "checkSnapshot",
+                campo: "Snapshot"
+            },{
+                id: "checkPlug-in",
+                campo: "Plug-in"
+            },{
+                id: "checkGoodStudent",
+                campo: "GoodStudent"
+            },{
+                id: "checkDistantStudent",
+                campo: "DistantStudent"
+            }]
+            for(const descuento of descuentos){
+                const check = document.getElementById(descuento.id);
+                if (check.checked) {
+                    var newField = {
+                        id: descuento.id,
+                        campo: descuento.campo,
+                        informacion: "Yes"
+                    }
+                    addField(fields, newField);
+                }else{
+                    var newField = {
+                        id: descuento.id,
+                        campo: descuento.campo,
+                        informacion: "No"
+                    }
+                    addField(fields, newField);
+                }
+                if (check.id == "checkFull") {
+                    if (check.checked == false) {
+                        var newField = {
+                            id: "EFT",
+                            campo: "EFT",
+                            informacion: "Yes"
+                        }
+                        addField(fields, newField);
+                        var newField = {
+                            id: "Full",
+                            campo: "checkFull",
+                            informacion: "No"
+                        }
+                        addField(fields, newField);
+                    } else {
+                        var newField = {
+                            id: "EFT",
+                            campo: "EFT",
+                            informacion: "No"
+                        }
+                        addField(fields, newField);
+                    }
+                }
+                if (check.id == "checkSnapshot") {
+                    if (!check.checked) {
+                        var newField = {
+                            id: "Snapshot",
+                            campo: "Snapshot",
+                            informacion: "-"
+                        }
+                        addField(fields, newField);
+                    } else {
+                        var Snapshot = snapshots.join(" / ");
+                        var newField = {
+                            id: "Snapshot",
+                            campo: "Snapshot",
+                            informacion: Snapshot
+                        }
+                        addField(fields, newField);
+                    }
+                }
+                if (check.id == "checkPlug-in") {
+                    if (!check.checked) {
+                        var newField = {
+                            id: "Plug-in",
+                            campo: "Plug-in",
+                            informacion: "-"
+                        }
+                        addField(fields, newField);
+                    } else {
+                        var plugin = plugins.join(" / ");
+                        var newField = {
+                            id: "Plug-in",
+                            campo: "Plug-in",
+                            informacion: plugin
+                        }
+                        addField(fields, newField);
+                    }
+                }
+            }
+
+
+
+            //Nombre completo
+            const inputName = document.getElementById("nombre");
+            const inputApellido = document.getElementById("apellido");
+            if (!!inputName && !!inputApellido) {
+                var nombreCompleto = `${inputName.value} ${inputApellido.value}`;
+                nombreCompleto = nombreCompleto.toUpperCase();
+                var newField = {
+                    id: "fullName",
+                    campo: "fullName",
+                    informacion: nombreCompleto
+                }
+                addField(fields, newField);
+                fields.fullName = nombreCompleto;
+            }
+
+            //checksSr22
+            const checksSr22 = document.getElementsByClassName("sr22");
+            for (let index = 0; index < checksSr22.length; index++) {
+                var check = checksSr22[index];
+                if (check.checked) {
+                    var newField = {
+                        id: `Sr22${index}`,
+                        campo: `Sr22${index}`,
+                        informacion: true,
+                        tipo: "check"
+                    }
+                    addField(fields, newField);
+                }
+                
+            }
+            console.log(fields);
+            
+            //Agregar la fecha de hoy
+            const fechaHoyFormateada = `${fechaHoy.getMonth() + 1}/${fechaHoy.getDate()}/${fechaHoy.getFullYear()}`;
+            var newField = {
+                id: "Date",
+                campo: "Date",
+                informacion: fechaHoyFormateada,
+                tipo: "text"
+            }
+            addField(fields, newField);
+
+            if (isValid) {
+                return fields;
+            } else {
+                return null;
+            }
+        }
+
+        const butonGenerar = document.getElementById("butonGenerar");
+        butonGenerar.addEventListener('click', ()=>{
+            const fields = confirmacion();
+            console.log(fields);
+            var mensajeBotonError = document.getElementById("mensajeBotonError");
+            if (fields !== null) {
+                generarPDF(fields)
+                mensajeBotonError.style.display = "none";
+            }else{
+                mensajeBotonError.style.display = "block";
+            }
+        })
+
+        async function generarPDF(fields){
+
+            // Cargar el archivo PDF existente
+            //const url = "APP AUTO - plantilla.pdf"; // Cambia esta ruta por la del PDF
+            const fileId = '1EASu68gnCzljKbjOdTpKR5PSaX6H_9Vk'; // Reemplaza con el ID de tu archivo
+            const url = `https://drive.google.com/uc?export=download&id=${fileId}`;
+            const existingPdfBytes = await fetch(url).then(res => res.arrayBuffer());
+    
+            // Cargar el PDF en PDF-Lib
+            const pdfDoc = await PDFLib.PDFDocument.load(existingPdfBytes);
+    
+            // Obtener los campos del formulario PDF
+            const form = pdfDoc.getForm();
+
+            //---------------------------
+            for(const field of fields){
+                try {
+                    const nombreCampo = form.getField(field.campo);
+                    if (nombreCampo) {
+                        if (field.tipo !== "check") {
+                            nombreCampo.setText(field.informacion);
+                        } else {
+                            if (field.informacion) {
+                                nombreCampo.check()
+                            }
+                        }
+                    }
+                } catch (error) {
+                    console.log(`El campo ${field.campo} no existe`);
+                }
+                    
+            }
+
+            // Establecer permisos de acceso al PDF
+            /*
+            const permissions = {
+                editing: false, // Deshabilitar la edición del PDF
+                printing: true, // Permitir la impresión del PDF
+                modifyingAnnotations: false, // Deshabilitar la modificación de anotaciones
+            };
+
+            // Encriptar el PDF con los permisos establecidos
+            const encryptedPdfBytes = await pdfDoc.encrypt({
+                userPassword: '', // Contraseña de usuario (opcional)
+                ownerPassword: 'tu_contraseña_propietario', // Contraseña del propietario (requerida)
+                permissions: permissions,
+            });*/
+
+            // Guardar el PDF modificado
+            const pdfBytes = await pdfDoc.save();
+
+            // Descargar el PDF generado
+            //const blob = new Blob([encryptedPdfBytes], { type: 'application/pdf' });
+            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `APP - ${fields.fullName}.pdf`;
+            link.click();
+        }
+
+    </script>
+</body>
+</html>
