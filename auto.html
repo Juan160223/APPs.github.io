@@ -2251,9 +2251,7 @@
         async function generarPDF(fields){
 
             // Cargar el archivo PDF existente
-            //const url = "APP AUTO - plantilla.pdf"; // Cambia esta ruta por la del PDF
-            const fileId = '1EASu68gnCzljKbjOdTpKR5PSaX6H_9Vk'; // Reemplaza con el ID de tu archivo
-            const url = `https://drive.google.com/uc?export=download&id=${fileId}`;
+            const url = "APP AUTO - plantilla.pdf"; // Cambia esta ruta por la del PDF
             const existingPdfBytes = await fetch(url).then(res => res.arrayBuffer());
     
             // Cargar el PDF en PDF-Lib
